@@ -104,9 +104,17 @@
   <ItemGroup />
   <ItemGroup>
     <ClCompile Include="..\src\EpidemicSimulationApp.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="PersonController.cpp" />
+    <ClCompile Include="Simulation.cpp" />
+    <ClCompile Include="SIRGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="PersonController.h" />
+    <ClInclude Include="Simulation.h" />
+    <ClInclude Include="SIRGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
