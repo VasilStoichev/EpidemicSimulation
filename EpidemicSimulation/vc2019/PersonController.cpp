@@ -31,7 +31,7 @@ void PersonController::repelPeople()
 						(*p2)->setState(Infected);
 					}
 				}
-				if ((*p1)->getState() == 'S' && (*p2)->getState() == 'I')
+				if ((*p1)->getState() == Susceptible && (*p2)->getState() == Infected)
 				{
 					if (r < this->infectionChance)
 					{
