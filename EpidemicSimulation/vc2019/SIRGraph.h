@@ -14,6 +14,8 @@ private:
 	std::vector<Path2d> susceptibleSections;
 
 	unsigned startFrame;
+
+	void drawAxes();
 public:
 	SIRGraph();
 	void init(unsigned);

@@ -72,7 +72,7 @@ void PersonController::addPeople(unsigned _personCount, unsigned _infected)
 		if (leftInfected == 0) state = Susceptible;
 
 		float x = Rand::randFloat(-20.0f, 0.0f);
-		float y = Rand::randFloat(app::getWindowHeight() / 2 - 40.0f);
+		float y = Rand::randFloat(50.0f,app::getWindowHeight() / 2 - 40.0f);
 
 		people.push_back(new Person(vec2(x, y), state));
 		leftInfected--;

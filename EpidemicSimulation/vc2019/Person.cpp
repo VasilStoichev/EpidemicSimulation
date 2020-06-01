@@ -6,9 +6,9 @@ void Person::correctOutOfBounds()
 	float y = this->location.y;
 
 	//change direction if near top or bottom wall
-	if ((y < 20.0f && y < 0.0f) || (y > app::getWindowHeight() / 2.0f - 20.0f && y > 0.0f))
+	if ((y < 50.0f && y < 0.0f) || (y > app::getWindowHeight() / 2.0f - 50.0f && y > 0.0f))
 	{
-		this->velocity.y = this->velocity.y * -1.0f;
+		this->velocity.y = (this->velocity.y * -1.0f);
 	}
 }
 
@@ -52,13 +52,13 @@ Person::Person(vec2 _location, SIRGroup _state)
 {
 	this->location = _location;
 	this->state = _state;
-
+	
 	float x = Rand::randFloat(0.3f, 0.9f);
 	float y = Rand::randFloat(-0.6f, 0.6f);
 	this->velocity = vec2(x, y);
 
 	this->radius = PERSON_RADIUS;
-	this->infectedSince = 0;
+	this->infectedSince = (_state == Infected);
 	this->acceleration = vec2(0, 0);
 	this->speedVariation = Rand::randFloat(0.5f, 0.8f);
 }

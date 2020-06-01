@@ -42,9 +42,10 @@ void EpidemicSimulationApp::setup()
 	mMaxPeople = 150;
 	frame = 0;
 	setWindowSize(1280, 720);
+	setFrameRate(30);
 	//params
 	mParams = params::InterfaceGl::create(getWindow(), "Params", toPixels(ivec2(300, 400)));
-	mParams->addParam("Decease duration", &mDuration).min(1).max(20).step(1);
+	mParams->addParam("Decease duration(s)", &mDuration).min(1).max(20).step(1);
 	mParams->addParam("Spread Chance(%)", &mChance).min(1).max(100).step(5);
 	mParams->addParam("Number of people", &mMaxPeople).min(0).max(300).step(10);
 	mParams->addSeparator();
@@ -80,6 +81,7 @@ void EpidemicSimulationApp::draw()
 	gl::clear( Color( 0, 0, 0 ) ); 
 	mParams->draw();
 	if (started && getElapsedFrames() > frame)sim.draw();
+	
 }
 
 CINDER_APP( EpidemicSimulationApp, RendererGl )
