@@ -15,5 +15,5 @@ public:
 	void init(unsigned chance,unsigned duration,unsigned max,unsigned frame);
 	void update();
 	void draw();
-
+	void reset();
 };

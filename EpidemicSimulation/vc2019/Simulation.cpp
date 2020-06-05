@@ -34,3 +34,11 @@ void Simulation::draw()
 	controller.draw();
 	graph.draw();
 }
+
+void Simulation::reset()
+{
+	this->controller.reset();
+	this->graph.reset();
+	this->startFrame = 0;
+	this->count = 0;
+}

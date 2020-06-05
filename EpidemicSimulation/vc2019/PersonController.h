@@ -30,6 +30,6 @@ public:
 	void init(float, unsigned);
 	void update();
 	void draw();
-
+	void reset();
 	CountByGroup getCount();
 };

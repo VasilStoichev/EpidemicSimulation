@@ -128,6 +128,15 @@ void PersonController::draw()
 	}
 }
 
+void PersonController::reset()
+{
+	this->people.clear();
+	this->personCount = 0;
+	this->SIRcount.infected = 0;
+	this->SIRcount.susceptible = 0;
+	this->SIRcount.recovered = 0;
+}
+
 CountByGroup PersonController::getCount()
 {
 	return this->SIRcount;

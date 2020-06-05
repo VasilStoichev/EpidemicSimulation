@@ -21,5 +21,5 @@ public:
 	void init(unsigned);
 	void update(unsigned,unsigned,unsigned);
 	void draw();
-
+	void reset();
 };

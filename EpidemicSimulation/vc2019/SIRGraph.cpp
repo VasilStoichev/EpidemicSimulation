@@ -17,14 +17,14 @@ void SIRGraph::drawAxes()
 
 SIRGraph::SIRGraph()
 {
-	this->pointsInfected.push_back(vec2(50.0f, 670.0f));
-	this->pointsRecovered.push_back(vec2(50.0f, 670.0f));
 	this->startFrame = 0;
 }
 
 void SIRGraph::init(unsigned _frame)
 {
 	this->startFrame = _frame;
+	this->pointsInfected.push_back(vec2(50.0f, 670.0f));
+	this->pointsRecovered.push_back(vec2(50.0f, 670.0f));
 }
 
 void SIRGraph::update(unsigned infected, unsigned recovered, unsigned total)
@@ -82,4 +82,13 @@ void SIRGraph::draw()
 		gl::drawSolid(p);
 	}
 	gl::lineWidth(1);
+}
+
+void SIRGraph::reset()
+{
+	this->infectedSections.clear();
+	this->recoveredSections.clear();
+	this->susceptibleSections.clear();
+	this->pointsInfected.clear();
+	this->pointsRecovered.clear();
 }
