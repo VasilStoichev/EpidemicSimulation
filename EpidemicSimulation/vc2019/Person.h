@@ -22,7 +22,8 @@ private:
 	vec2 location;
 	vec2 velocity;
 	vec2 acceleration;
-
+	bool mask;
+	std::string simType;
 	float radius;
 	SIRGroup state;
 	unsigned infectedSince;
@@ -31,7 +32,7 @@ private:
 	void correctOutOfBounds();
 	void correctSpeed();
 public:
-	Person(vec2, SIRGroup);
+	Person(vec2, SIRGroup, std::string,bool);
 
 	void update();
 	void draw();
@@ -42,6 +43,7 @@ public:
 	vec2 getVelocity();
 	SIRGroup getState();
 	unsigned getInfectedSince();
+	bool hasMask();
 
 	void setLocation(vec2);
 	void setAcceleration(vec2);

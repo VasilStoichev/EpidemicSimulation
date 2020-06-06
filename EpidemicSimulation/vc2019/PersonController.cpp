@@ -1,4 +1,4 @@
-#include "PersonController.h"
+﻿#include "PersonController.h"
 
 void PersonController::repelPeople()
 {
@@ -19,12 +19,28 @@ void PersonController::repelPeople()
 				(*p1)->setAcceleration((*p1)->getAcceleration() + vec2(0, y));
 				(*p2)->setAcceleration((*p2)->getAcceleration() - vec2(0, y));
 			}
-			if (app::getElapsedFrames() % 30 == 0 && distSquared < INFECTION_RADIUS)
+		}
+	}
+}
+
+void PersonController::spread()
+{
+	for (std::list<Person*>::iterator p1 = people.begin(); p1 != people.end(); ++p1)
+	{
+		std::list<Person*>::iterator p2 = p1;
+		++p2;
+		for (p2; p2 != people.end(); ++p2)
+		{
+			float maskReduction = 1.0f;
+			vec2 dir = (*p1)->getLocation() - (*p2)->getLocation();
+			float distSquared = length2(dir);
+			float r = Rand::randFloat(1.0f);
+			if (distSquared <= this->infectionRadius)
 			{
-				float r = Rand::randFloat(1.0f);
 				if ((*p1)->getState() == Infected && (*p2)->getState() == Susceptible)
 				{
-					if (r < this->infectionChance)
+					if ((*p1)->hasMask()) maskReduction = 1.0f - maskEffect;
+					if (r < this->infectionChance * maskReduction)
 					{
 						this->SIRcount.infected++;
 						this->SIRcount.susceptible--;
@@ -33,7 +49,8 @@ void PersonController::repelPeople()
 				}
 				if ((*p1)->getState() == Susceptible && (*p2)->getState() == Infected)
 				{
-					if (r < this->infectionChance)
+					if ((*p2)->hasMask()) maskReduction = 1.0f - maskEffect;
+					if (r < this->infectionChance * maskReduction)
 					{
 						this->SIRcount.infected++;
 						this->SIRcount.susceptible--;
@@ -57,13 +74,38 @@ PersonController::~PersonController()
 	//this->people.~list();
 }
 
-void PersonController::addPeople(unsigned _personCount, unsigned _infected)
+void PersonController::addExam()
 {
-	//Adds _personCount people, _infected of which start infected
+	int infectedPosition = Rand::randUint(115);
+	int position = 0;
+	this->personCount = 144;
+	SIRGroup state;
+	SIRcount.infected++;
+	for (float x = 50.0f; x <= 1200.0f; x+=50.0f)
+	{
+		for (float y = 50.0f; y <= 300.0f; y+=50.0f)
+		{
+			if (position == infectedPosition)
+			{
+				state = Infected;
+			}
+			else
+			{
+				state = Susceptible;
+			}
+			this->people.push_back(new Person(vec2(x, y), state,this->simType,false));
+			position++;
+		}
+	}
+}
+
+void PersonController::addPeople(unsigned _personCount, unsigned _infected,unsigned _masked)
+{
+	//Adds _personCount people, _infected of which start infected, _masked wear masks
 	int leftInfected = _infected;
 	SIRGroup state = Infected;
 	this->personCount += _personCount;
-
+	int leftMasked = _masked;
 	Rand::randomize();
 	this->SIRcount.susceptible += _personCount - _infected;
 	this->SIRcount.infected += _infected;
@@ -74,21 +116,25 @@ void PersonController::addPeople(unsigned _personCount, unsigned _infected)
 		float x = Rand::randFloat(-20.0f, 0.0f);
 		float y = Rand::randFloat(50.0f,app::getWindowHeight() / 2 - 40.0f);
 
-		people.push_back(new Person(vec2(x, y), state));
+		people.push_back(new Person(vec2(x, y), state,this->simType,leftMasked>0));
 		leftInfected--;
+		leftMasked--;
 	}
 }
 
-void PersonController::init(float _infectionChance, unsigned _infectionDuration)
+void PersonController::init(float _infectionChance, unsigned _infectionDuration,float _maskEffect,float _infectionRadius, std::string _simType)
 {
 	this->infectionChance = _infectionChance;
-	this->infectionDuration = _infectionDuration;
+	this->infectionDuration =_infectionDuration != 0 ?  _infectionDuration : INT_MAX;
+	this->simType = _simType;
+	this->maskEffect = _maskEffect;
+	this->infectionRadius = (float)(_infectionRadius*_infectionRadius);
 }
 
 void PersonController::update()
 {
-	this->repelPeople();
-
+	if(this->simType !="Exam")this->repelPeople();
+	if (app::getElapsedFrames() % 30 == 0) this->spread();
 	for (std::list<Person*>::iterator p = this->people.begin(); p!=this->people.end();)
 	{
 		bool stateChangedThisUpdate = false;
@@ -140,6 +186,11 @@ void PersonController::reset()
 CountByGroup PersonController::getCount()
 {
 	return this->SIRcount;
+}
+
+unsigned PersonController::getPersonCount()
+{
+	return this->personCount;
 }
 
 CountByGroup::CountByGroup()

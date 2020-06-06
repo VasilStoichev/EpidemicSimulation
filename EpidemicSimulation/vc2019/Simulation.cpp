@@ -6,25 +6,35 @@ Simulation::Simulation()
 	this->count = 0;
 }
 
-void Simulation::init(unsigned chance, unsigned duration, unsigned max, unsigned frame)
+void Simulation::init(unsigned chance, unsigned duration, unsigned max, unsigned frame, unsigned _masked, unsigned maskEffect,unsigned radius,std::string _type)
 {
-	controller.init(chance / 100.0f, duration);
+	controller.init(chance / 100.0f, duration,maskEffect/100.0f,radius,_type);
 	graph.init(frame);
-	this->maxPeople = max;
+	this->maxPeople = _type == "Exam" ? 144 : max;
 	this->startFrame = frame;
+	this->type = _type;
+	this->masked = _masked / 100.0f;
 }
 
 void Simulation::update()
 {
 	if (app::getElapsedFrames() % 30 == 0)
 	{
-		CountByGroup groups = controller.getCount();
-		graph.update(groups.infected,groups.recovered,maxPeople);
-		if (app::getElapsedFrames() < this->startFrame + 600)
+	
+
+		if (type == "Exam" && count == 0)
+		{
+			controller.addExam();
+			count++;
+		}
+		if (type == "Corridor" && app::getElapsedFrames() < this->startFrame + 600)
 		{
 			count++;
-			controller.addPeople(maxPeople / 20, count == 3);
+			unsigned toAdd = maxPeople / 20;
+			controller.addPeople(toAdd, count == 3,toAdd * this->masked);
 		}
+		CountByGroup groups = controller.getCount();
+		graph.update(groups.infected, groups.recovered, maxPeople);
 	}
 	controller.update();
 }

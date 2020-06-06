@@ -1,4 +1,7 @@
 #include "Person.h"
+#include "cinder/svg/Svg.h"
+#include "cinder/ImageIo.h"
+#include "cinder/gl/Texture.h"
 
 void Person::correctOutOfBounds()
 {
@@ -48,11 +51,13 @@ void Person::correctSpeed()
 	}
 }
 
-Person::Person(vec2 _location, SIRGroup _state)
+Person::Person(vec2 _location, SIRGroup _state,std::string _simType,bool _mask)
 {
 	this->location = _location;
 	this->state = _state;
-	
+	this->simType = _simType;
+	this->mask = _mask;
+
 	float x = Rand::randFloat(0.3f, 0.9f);
 	float y = Rand::randFloat(-0.6f, 0.6f);
 	this->velocity = vec2(x, y);
@@ -65,15 +70,17 @@ Person::Person(vec2 _location, SIRGroup _state)
 
 void Person::update()
 {
-	this->acceleration += vec2(0.05, 0);
-	this->velocity += this->acceleration;
-	this->correctSpeed();
+	if (this->simType != "Exam")
+	{
+		this->acceleration += vec2(0.05, 0);
+		this->velocity += this->acceleration;
+		this->correctSpeed();
 
-	this->location += this->velocity;
-	this->correctOutOfBounds();
-	
-	this->acceleration = { 0, 0 };
+		this->location += this->velocity;
+		this->correctOutOfBounds();
 
+		this->acceleration = { 0, 0 };
+	}
 	if (this->infectedSince > 0 && app::getElapsedFrames() % 30 == 0)
 	{
 		this->infectedSince++;
@@ -82,6 +89,7 @@ void Person::update()
 
 void Person::draw()
 {
+	
 	if (state == Infected)
 	{
 		gl::color(Color(1, 0, 0));
@@ -94,7 +102,14 @@ void Person::draw()
 	{
 		gl::color(Color(1, 1, 1));
 	}
+	
 	gl::drawSolidCircle(this->location, this->radius);
+	if(mask)
+	{
+		gl::color(Color(0.50, 0.91, 0.75));
+		gl::lineWidth(4);
+		gl::drawLine(vec2(this->location.x - this->radius, this->location.y), vec2(this->location.x + this->radius, this->location.y));
+	}
 }
 
 vec2 Person::getLocation()
@@ -120,6 +135,11 @@ SIRGroup Person::getState()
 unsigned Person::getInfectedSince()
 {
 	return this->infectedSince;
+}
+
+bool Person::hasMask()
+{
+	return this->mask;
 }
 
 void Person::setLocation(vec2 _location)
