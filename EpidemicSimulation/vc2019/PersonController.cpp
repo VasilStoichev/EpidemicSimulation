@@ -37,7 +37,7 @@ void PersonController::spread()
 			float r = Rand::randFloat(1.0f);
 			if (distSquared <= this->infectionRadius)
 			{
-				if ((*p1)->getState() == Infected && (*p2)->getState() == Susceptible)
+				if ((*p1)->getState() == Infected && (*p1)->getInfectedSince() > 1 && (*p2)->getState() == Susceptible)
 				{
 					if ((*p1)->hasMask()) maskReduction = 1.0f - maskEffect;
 					if (r < this->infectionChance * maskReduction)
@@ -47,7 +47,7 @@ void PersonController::spread()
 						(*p2)->setState(Infected);
 					}
 				}
-				if ((*p1)->getState() == Susceptible && (*p2)->getState() == Infected)
+				if ((*p1)->getState() == Susceptible && (*p2)->getInfectedSince() > 1 && (*p2)->getState() == Infected)
 				{
 					if ((*p2)->hasMask()) maskReduction = 1.0f - maskEffect;
 					if (r < this->infectionChance * maskReduction)
