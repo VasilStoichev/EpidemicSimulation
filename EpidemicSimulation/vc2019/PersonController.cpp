@@ -122,19 +122,22 @@ void PersonController::addPeople(unsigned _personCount, unsigned _infected,unsig
 	}
 }
 
-void PersonController::init(float _infectionChance, unsigned _infectionDuration,float _maskEffect,float _infectionRadius, std::string _simType)
+void PersonController::init(float _infectionChance, unsigned _infectionDuration,unsigned _spreadInterval, float _maskEffect,float _infectionRadius, std::string _simType)
 {
 	this->infectionChance = _infectionChance;
 	this->infectionDuration =_infectionDuration != 0 ?  _infectionDuration : INT_MAX;
 	this->simType = _simType;
 	this->maskEffect = _maskEffect;
 	this->infectionRadius = (float)(_infectionRadius*_infectionRadius);
+	this->spreadInterval = _spreadInterval;
 }
 
 void PersonController::update()
 {
 	if(this->simType !="Exam")this->repelPeople();
-	if (app::getElapsedFrames() % 30 == 0) this->spread();
+	if (app::getElapsedFrames() %(this->spreadInterval * 30) == 0) this->spread();
+
+
 	for (std::list<Person*>::iterator p = this->people.begin(); p!=this->people.end();)
 	{
 		bool stateChangedThisUpdate = false;

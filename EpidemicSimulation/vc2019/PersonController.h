@@ -21,8 +21,12 @@ private:
 	float infectionChance;
 	float maskEffect;
 	unsigned infectionDuration;
+	unsigned spreadInterval;
+
 	std::string simType;
 	float infectionRadius;
+
+
 
 	void repelPeople();
 	void spread();
@@ -32,7 +36,7 @@ public:
 
 	void addExam();
 	void addPeople(unsigned, unsigned,unsigned);
-	void init(float, unsigned,float,float, std::string);
+	void init(float infectionChance, unsigned infectionDuration, unsigned spreadInterval, float maskEffect,float infectionRadius, std::string simType);
 	void update();
 	void draw();
 	void reset();

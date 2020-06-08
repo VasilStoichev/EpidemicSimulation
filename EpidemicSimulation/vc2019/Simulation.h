@@ -15,7 +15,7 @@ private:
 public:
 	Simulation();
 
-	void init(unsigned chance,unsigned duration,unsigned max,unsigned frame,unsigned masked, unsigned maskEffect,unsigned radius,std::string type);
+	void init(unsigned chance,unsigned duration,unsigned max,unsigned frame,unsigned masked, unsigned maskEffect,unsigned radius,unsigned interval,std::string type);
 	void update();
 	void draw();
 	void reset();

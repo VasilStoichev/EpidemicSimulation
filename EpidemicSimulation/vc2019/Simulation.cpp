@@ -6,9 +6,9 @@ Simulation::Simulation()
 	this->count = 0;
 }
 
-void Simulation::init(unsigned chance, unsigned duration, unsigned max, unsigned frame, unsigned _masked, unsigned maskEffect,unsigned radius,std::string _type)
+void Simulation::init(unsigned chance, unsigned duration, unsigned max, unsigned frame, unsigned _masked, unsigned maskEffect,unsigned radius,unsigned interval, std::string _type)
 {
-	controller.init(chance / 100.0f, duration,maskEffect/100.0f,radius,_type);
+	controller.init(chance / 100.0f, duration, interval, maskEffect/100.0f,radius,_type);
 	graph.init(frame);
 	this->maxPeople = _type == "Exam" ? 144 : max;
 	this->startFrame = frame;

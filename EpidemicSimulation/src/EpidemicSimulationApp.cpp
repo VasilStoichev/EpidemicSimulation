@@ -19,6 +19,7 @@ class EpidemicSimulationApp : public App {
 	unsigned mMasked;
 	unsigned mMaskEffect;
 	unsigned mRadius;
+	unsigned mInterval;
 	unsigned frame;
 	std::vector<std::string> simTypes;
 	int typeSelection;
@@ -65,10 +66,10 @@ void EpidemicSimulationApp::typeSelected()
 	mParams->clear();
 	mParams->addParam("Decease duration(s)", &mDuration).min(0).max(20).step(1);
 	mParams->addParam("Spread Chance(%)", &mChance).min(1).max(100).step(5);
+	mParams->addParam("Spread Interval(s)", &mInterval).min(1).max(40).step(1);
 	if (selected == "Corridor")
 	{
-	
-		mParams->addParam("Number of people", &mMaxPeople).min(0).max(300).step(10);
+		mParams->addParam("Number of people", &mMaxPeople).min(1).max(200).step(10);
 		mParams->addSeparator();
 		mParams->addParam("People with masks(%)", &mMasked).min(0).max(100).step(5);
 		mParams->addParam("Mask effectiveness(%)", &mMaskEffect).min(0).max(100).step(5);
@@ -97,6 +98,7 @@ void EpidemicSimulationApp::setup()
 	mMasked = 0;
 	mMaskEffect = 0;
 	mRadius = 50;
+	mInterval = 1;
 	setWindowSize(1280, 720);
 	setFrameRate(30);
 	//params
@@ -125,12 +127,13 @@ void EpidemicSimulationApp::update()
 			{
 				mParams->minimize();
 				this->frame = getElapsedFrames();
-				sim.init(mChance,mDuration,mMaxPeople,this->frame,mMasked,mMaskEffect,mRadius,simTypes[typeSelection]);
+				sim.init(mChance,mDuration,mMaxPeople,this->frame,mMasked,mMaskEffect,mRadius,mInterval,simTypes[typeSelection]);
 				init = 0;
 			}
 			if (getElapsedFrames() - frame > 1500) mParams->maximize();
 		sim.update();
 	}
+	setWindowSize(1280, 720);
 }
 
 void EpidemicSimulationApp::draw()
