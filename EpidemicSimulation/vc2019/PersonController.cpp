@@ -12,7 +12,6 @@ void PersonController::repelPeople()
 			float distSquared = length2(dir);
 			if (distSquared < REPEL_RADIUS)
 			{
-
 				float f = (REPEL_RADIUS / distSquared - 1.0f) * 0.05f;
 				dir = normalize(dir) * f;
 				float y = dir.y;
@@ -106,7 +105,7 @@ void PersonController::addPeople(unsigned _personCount, unsigned _infected,unsig
 	SIRGroup state = Infected;
 	this->personCount += _personCount;
 	int leftMasked = _masked;
-	Rand::randomize();
+	
 	this->SIRcount.susceptible += _personCount - _infected;
 	this->SIRcount.infected += _infected;
 	for (int i = 0; i < _personCount; i++)
@@ -124,6 +123,7 @@ void PersonController::addPeople(unsigned _personCount, unsigned _infected,unsig
 
 void PersonController::init(float _infectionChance, unsigned _infectionDuration,unsigned _spreadInterval, float _maskEffect,float _infectionRadius, std::string _simType)
 {
+	Rand::randomize();
 	this->infectionChance = _infectionChance;
 	this->infectionDuration =_infectionDuration != 0 ?  _infectionDuration : INT_MAX;
 	this->simType = _simType;
