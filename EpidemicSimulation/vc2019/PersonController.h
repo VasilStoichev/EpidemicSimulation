@@ -32,7 +32,6 @@ private:
 	void spread();
 public:
 	PersonController();
-	~PersonController();
 
 	void addExam();
 	void addPeople(unsigned, unsigned,unsigned);

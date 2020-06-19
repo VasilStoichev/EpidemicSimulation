@@ -68,11 +68,6 @@ PersonController::PersonController()
 	this->infectionDuration = 0;
 }
 
-PersonController::~PersonController()
-{
-	//this->people.~list();
-}
-
 void PersonController::addExam()
 {
 	int infectedPosition = Rand::randUint(115);

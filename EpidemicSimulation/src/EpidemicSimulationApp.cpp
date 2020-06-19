@@ -49,8 +49,6 @@ void EpidemicSimulationApp::button()
 }
 void EpidemicSimulationApp::reset()
 {
-	/*mParams->setOptions("Click Here to Reset", "visible=false");
-	mParams->setOptions("Click Here to Start", "visible=true");*/
 	mParams->clear();
 	mParams->addParam("Simulation type", simTypes, &typeSelection);
 	mParams->addSeparator();
@@ -74,10 +72,6 @@ void EpidemicSimulationApp::typeSelected()
 		mParams->addParam("People with masks(%)", &mMasked).min(0).max(100).step(5);
 		mParams->addParam("Mask effectiveness(%)", &mMaskEffect).min(0).max(100).step(5);
 		mParams->addParam("Spread radius", &mRadius).min(0).max(100).step(5);
-	}
-	else if (selected == "Exam")
-	{
-
 	}
 	
 	mParams->addSeparator();
